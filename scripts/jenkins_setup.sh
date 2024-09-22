@@ -10,18 +10,18 @@ sudo apt install fontconfig openjdk-17-jre software-properties-common && \
   sudo apt install python3.9 python3.9-venv
 
 # verify
-echo "\n\n"
+echo -e "\n\n"
 python3.9 --version
 python3.9 -m venv --help
-echo "\n\n"
+echo -e "\n\n"
 
 # install python3-pip
 sudo apt install python3-pip
 
 # verify
-echo "\n\n"
+echo -e "\n\n"
 pip3 --version
-echo "\n\n"
+echo -e "\n\n"
 
 # get Jenkins download repo:
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
