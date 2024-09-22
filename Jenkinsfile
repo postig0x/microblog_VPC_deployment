@@ -4,7 +4,13 @@ pipeline {
         stage ('Build') {
             steps {
                 sh '''#!/bin/bash
-                <enter your code here>
+                python3.9 -m venv venv
+                source venv/bin/activate
+                pip install -r requirements.txt
+                pip install gunicorn pymysql crypotgraphy
+                FLASK_APP=microblog.py
+                flask translate compile
+                flask db upgrade
                 '''
             }
         }
@@ -23,14 +29,16 @@ pipeline {
         }
       stage ('OWASP FS SCAN') {
             steps {
-                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                withCredentials([string(credentialsId: 'NVD_API_KEY', variable: "NVD_API_KEY")]) {
+                    dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit --nvdApiKey ${NVD_API_KEY}', odcInstallation: 'DP-Check'
+                    dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                }
             }
         }
       stage ('Deploy') {
             steps {
                 sh '''#!/bin/bash
-                <enter your code here>
+                ssh -i ~/.ssh/webservkey ubuntu@$WEBSERV "./setup.sh"
                 '''
             }
         }
