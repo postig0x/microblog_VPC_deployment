@@ -49,9 +49,11 @@ pipeline {
               branch 'main'
             }
             steps {
-                sh '''#!/bin/bash
-                ssh -i ~/.ssh/webservkey ubuntu@$WEBSERV "./setup.sh"
-                '''
+                withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'webservkey')]) {
+                    sh '''#!/bin/bash
+                    ssh -i /home/ubuntu/.ssh/${webservkey} ubuntu@$WEBSERV "./setup.sh"
+                    '''
+                }
             }
         }
     }
