@@ -1,5 +1,6 @@
 # ignore private keys
 secrets/
+.DS_Store
 
 # credit: https://github.com/github/gitignore/blob/main/Python.gitignore
 # python ignore template
