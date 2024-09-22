@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  when {
+    branch 'main'
+  }
     stages {
         stage ('Build') {
             steps {
