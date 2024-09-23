@@ -49,11 +49,11 @@ pipeline {
               branch 'main'
             }
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'WEBSERV_KEY')]) {
+                sshagent(credentials: ['webservkey']) {
                     sh '''#!/bin/bash
                     source /etc/environment
                     echo "setting up web server: ${WEBSERV}"
-                    ssh -i ${WEBSERV_KEY} ubuntu@${WEBSERV} "./setup.sh"
+                    ssh ubuntu@${WEBSERV} "./setup.sh"
                     '''
                 }
             }
