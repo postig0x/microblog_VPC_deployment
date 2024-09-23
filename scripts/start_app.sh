@@ -79,3 +79,4 @@ flask db upgrade
 
 # serve app
 gunicorn -b :5000 -w 4 microblog:app &
+disown
