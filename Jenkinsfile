@@ -10,7 +10,7 @@ pipeline {
                 python3.9 -m venv venv
                 source venv/bin/activate
                 pip install -r requirements.txt
-                pip install gunicorn pymysql crypotgraphy
+                pip install gunicorn pymysql cryptography
                 FLASK_APP=microblog.py
                 flask translate compile
                 flask db upgrade
@@ -49,9 +49,10 @@ pipeline {
               branch 'main'
             }
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'webservkey')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'WEBSERV_KEY')]) {
                     sh '''#!/bin/bash
-                    ssh -i ${webservkey} ubuntu@${env.WEBSERV} "./setup.sh"
+                    echo "setting up web server: ${WEBSERV}"
+                    ssh -i ${WEBSERV_KEY} ubuntu@${WEBSERV} "./setup.sh"
                     '''
                 }
             }
