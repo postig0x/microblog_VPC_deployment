@@ -78,4 +78,4 @@ flask translate compile
 flask db upgrade
 
 # serve app
-gunicorn -b :5000 -w 4 microblog:app & disown
+nohup gunicorn -b :5000 -w 4 microblog:app &
