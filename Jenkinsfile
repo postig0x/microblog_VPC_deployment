@@ -57,7 +57,7 @@ pipeline {
                     trap "ssh-agent -k" EXIT
                     ssh-add "$wsk"
                     ssh ubuntu@${WEBSERV} -o StrictHostKeyChecking=no \
-                    'ps aux | grep -i "gunicorn" | tr -s " " | head -n 1 | cut -d " " -f 2 > pid.txt && kill $(cat pid.txt)'
+                    'ps aux | grep gunicorn | grep -v grep | awk "{ print \$2 }" | head -n 1 >> pid.txt'
                     exit 0
                     '''
                 }
