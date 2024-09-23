@@ -49,7 +49,7 @@ pipeline {
               branch 'main'
             }
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'wsk')])
+                withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'wsk')]) {
                     sh '''#!/bin/bash
                     source /etc/environment
                     eval `ssh-agent -s`
