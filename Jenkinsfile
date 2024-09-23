@@ -56,8 +56,9 @@ pipeline {
                     eval `ssh-agent -s`
                     trap "ssh-agent -k" EXIT
                     ssh-add "$wsk"
-                    ssh ubuntu@${WEBSERV} -o StrictHostKeyChecking=no \
-                    'kill $(ps aux | grep gunicorn | grep -v grep | awk "{ print \$2 }" | head -n 1)'
+                    ssh ubuntu@${WEBSERV} -o StrictHostKeyChecking=no '\
+                    ps aux | grep gunicorn | grep -v grep | awk "{ print \$2 }"
+                    kill $(ps aux | grep gunicorn | grep -v grep | awk "{ print \$2 }" | head -n 1)'
                     sleep 5
                     '''
                 }
