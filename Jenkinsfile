@@ -51,7 +51,6 @@ pipeline {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'webservkey')]) {
                     sh '''#!/bin/bash
-                    source /home/ubuntu/.jenkinsrc
                     ssh -i ${webservkey} ubuntu@${env.WEBSERV} "./setup.sh"
                     '''
                 }
