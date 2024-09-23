@@ -1,10 +1,10 @@
 pipeline {
   agent any
     stages {
-        when {
-          branch 'main'
-        }
         stage ('Build') {
+            when {
+                branch 'main'
+            }
             steps {
                 sh '''#!/bin/bash
                 python3.9 -m venv venv
@@ -18,6 +18,9 @@ pipeline {
             }
         }
         stage ('Test') {
+            when {
+                branch 'main'
+            }
             steps {
                 sh '''#!/bin/bash
                 source venv/bin/activate
@@ -31,6 +34,9 @@ pipeline {
             }
         }
       stage ('OWASP FS SCAN') {
+            when {
+                branch 'main'
+            }
             steps {
                 withCredentials([string(credentialsId: 'NVD_API_KEY', variable: "NVD_API_KEY")]) {
                     dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit --nvdApiKey ${NVD_API_KEY}', odcInstallation: 'DP-Check'
@@ -39,6 +45,9 @@ pipeline {
             }
         }
       stage ('Clean') {
+            when {
+                branch 'main'
+            }
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'wsk')]) {
                     sh '''#!/bin/bash
@@ -55,6 +64,9 @@ pipeline {
             }
       }
       stage ('Deploy') {
+            when {
+                branch 'main'
+            }
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'wsk')]) {
                     sh '''#!/bin/bash
