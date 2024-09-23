@@ -51,6 +51,8 @@ pipeline {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'webservkey')]) {
                     sh '''#!/bin/bash
+                    echo "${env.WEBSERV}"
+                    echo "${webservkey}"
                     ssh -i ${webservkey} ubuntu@${env.WEBSERV} "./setup.sh"
                     '''
                 }
