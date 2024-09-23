@@ -49,9 +49,12 @@ pipeline {
               branch 'main'
             }
             steps {
-                sshagent(credentials: ['webservkey']) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'wsk')])
                     sh '''#!/bin/bash
                     source /etc/environment
+                    eval `ssh-agent -s`
+                    trap "ssh-agent -k" EXIT
+                    ssh-add "$wsk"
                     echo "setting up web server: ${WEBSERV}"
                     ssh ubuntu@${WEBSERV} "./setup.sh"
                     '''
