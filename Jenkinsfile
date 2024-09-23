@@ -56,8 +56,7 @@ pipeline {
                     eval `ssh-agent -s`
                     trap "ssh-agent -k" EXIT
                     ssh-add "$wsk"
-                    ssh ubuntu@${WEBSERV} -o StrictHostKeyChecking=no \
-                      'kill $(pgrep gunicorn)'
+                    ssh ubuntu@${WEBSERV} -o StrictHostKeyChecking=no "./kill_gunicorn.sh"
                     sleep 5
                     '''
                 }
