@@ -44,14 +44,36 @@ pipeline {
                 }
             }
         }
-      stage ('Deploy') {
+      stage ('Clean') {
             when {
               branch 'main'
             }
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'wsk')]) {
                     sh '''#!/bin/bash
+                    echo "cleaning app server..."
                     source /etc/environment
+                    eval `ssh-agent -s`
+                    trap "ssh-agent -k" EXIT
+                    ssh-add "$wsk"
+                    ssh ubuntu@${WEBSERV} -o StrictHostKeyChecking=no \
+                    "ps aux | grep -i "gunicorn" | tr -s " " | head -n 1 | cut -d " " -f 2 > pid.txt"
+                    kill $(cat pid.txt)
+                    exit 0
+                    '''
+                }
+            }
+      }
+      stage ('Deploy') {
+            when {
+              branch 'main'
+            }
+            steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'wsk')]) {
+                    sh '''#!/bin/bash
+                    echo "sourcing WEBSERV IP variable"
+                    source /etc/environment
+                    echo "setting up ssh key"
                     eval `ssh-agent -s`
                     trap "ssh-agent -k" EXIT
                     ssh-add "$wsk"
