@@ -65,7 +65,7 @@ pipeline {
             }
       }
       stage ('Deploy') {
-            when {
+            when {
               branch 'main'
             }
             steps {
