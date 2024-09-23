@@ -49,9 +49,9 @@ pipeline {
               branch 'main'
             }
             steps {
-                echo "${env.WEBSERV}"
                 withCredentials([sshUserPrivateKey(credentialsId: 'webservkey', keyFileVariable: 'webservkey')]) {
                     sh '''#!/bin/bash
+                    source /home/ubuntu/.jenkinsrc
                     ssh -i ${webservkey} ubuntu@${env.WEBSERV} "./setup.sh"
                     '''
                 }
