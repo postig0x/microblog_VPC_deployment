@@ -56,7 +56,7 @@ pipeline {
                     trap "ssh-agent -k" EXIT
                     ssh-add "$wsk"
                     echo "setting up web server: ${WEBSERV}"
-                    ssh ubuntu@${WEBSERV} "./setup.sh"
+                    ssh ubuntu@${WEBSERV} -o StrictHostKeyChecking=no "./setup.sh"
                     '''
                 }
             }
