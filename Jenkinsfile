@@ -54,6 +54,7 @@ pipeline {
                     echo "cleaning app server..."
                     source /etc/environment
                     eval `ssh-agent -s`
+                    # kill ssh agent on exit
                     trap "ssh-agent -k" EXIT
                     ssh-add "$wsk"
                     ssh ubuntu@${WEBSERV} -o StrictHostKeyChecking=no "./send_kill.sh"
