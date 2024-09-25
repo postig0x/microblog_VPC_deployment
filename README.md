@@ -1,3 +1,5 @@
+# Microblog VPC Deployment
+
 ## Purpose
 
 The purpose of this workload is to enhance our understanding of cloud infrastructure provisioning and deployment automation using AWS, focusing on building a more efficient and secure application deployment pipeline. This includes creating a custom Virtual Private Cloud (VPC) with a public and private subnet, establishing a CI/CD pipeline with Jenkins, and ensuring robust access control and monitoring. By focusing on best practices when self-provisioning a deployment, this project showcases the abiity to manage cloud resources and deploy applications effectively.
