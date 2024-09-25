@@ -33,13 +33,13 @@ The purpose of this workload is to enhance our understanding of cloud infrastruc
    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
    }
    ```
-  > Replace <private_ip> with the private IP address of the "Application_Server". Verify with `sudo nginx -t`, then restart with `sudo systemctl restart nginx`.
+    > Replace <private_ip> with the private IP address of the "Application_Server". Verify with `sudo nginx -t`, then restart with `sudo systemctl restart nginx`.
 8. Copy the key pair of the "Application_Server" to the "Web_Server". Test the SSH connection to "Application_Server" from "Web_Server" (thus establishing a known host in the "Web_Server").
 	1. We copy and rename the key from our local machine to the "Web_Server" via scp to accomplish this:
-	> `scp -i path/to/wl4key.pem path/to/wl4key.pem ubuntu@$WEBSERV:~/.ssh/appservkey.pem`
+	    > `scp -i path/to/wl4key.pem path/to/wl4key.pem ubuntu@$WEBSERV:~/.ssh/appservkey.pem`
 9. Create `scripts/start_app.sh` that will run on the "Application_Server" to install the necessary environment (python/pip), clone this repository, install the app dependences, set environment variables (i.e FLASK_APP=microblog.py), run `flask` commands, and serve the app with `gunicorn`. Also create `scripts/setup.sh` that will run in the "Web_Server" to ssh into the "Application_Server" to run `start_app.sh`.
 	1. Copy `scripts/start_app.sh` into the app server, and assign appropriate permissions (700):
-	> `scp -i secrets/wl4key.pem scripts/start_app.sh ubuntu@$WEBSERV:~/start_app.sh && ssh -i secrets/wl4key.pem ubuntu@$WEBSERV "scp -i .ssh/appservkey.pem start_app.sh ubuntu@10.0.0.26:start_app.sh && rm start_app.sh && ssh -i .ssh/appservkey.pem ubuntu@10.0.0.26 "chmod 700 start_app.sh""`
+	    > `scp -i secrets/wl4key.pem scripts/start_app.sh ubuntu@$WEBSERV:~/start_app.sh && ssh -i secrets/wl4key.pem ubuntu@$WEBSERV "scp -i .ssh/appservkey.pem start_app.sh ubuntu@10.0.0.26:start_app.sh && rm start_app.sh && ssh -i .ssh/appservkey.pem ubuntu@10.0.0.26 "chmod 700 start_app.sh""`
 	2. Copy `scripts/setup.sh` into the web server and assign permissions (700):
 		> `scp -i secrets/wl4key.pem scripts/setup.sh ubuntu@$WEBSERV:~/setup.sh && ssh -i secrets/wl4key.pem ubuntu@$WEBSERV "chmod 700 setup.sh"`
 	3. Running scripts with the source command is useful when a terminal session needs to access variables assigned within a script. Without the source command, the script will run in a subshell that completes without transferring/returning state.
